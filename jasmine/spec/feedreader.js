@@ -62,18 +62,49 @@ $(function() {
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
-        it("should be hidden by default", function() {
+        it("should be hidden by default", function(done) {
             // Check via transform css property
             expect($('.slide-menu').css('transform')).toBe("matrix(1, 0, 0, 1, -192, 0)")
             // Check also that body has class 'menu-hidden'
             expect(document.body.classList).toContain("menu-hidden");
+            done();
         });
 
-         /* TODO: Write a test that ensures the menu changes
+         /* Test that ensures the menu changes
           * visibility when the menu icon is clicked. This test
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+
+        // Nested suite necessarily to allow waiting for CSS transitions to complete
+        describe("hamburger icon", function() {
+            // Get jasmine to wait half a second before executing each spec
+            // to allow any CSS transitions to complete
+            beforeEach(function(done) {
+                // Trigger click on hamburger icon
+                $('.icon-list').click();
+                // Wait enough time for transition to complete
+                setTimeout(function() {
+                    done();
+                }, 300);
+            });
+
+            it("should make the menu appear when clicked", function(done) {
+                // Expect menu to become visible
+                expect($('.slide-menu').css('transform')).toBe("matrix(1, 0, 0, 1, 0, 0)")
+                expect(document.body.classList).not.toContain("menu-hidden");
+                done();
+            });
+
+            it("should make the menu disappear when clicked while the menu is visible",
+                function(done) {
+                    // Expect menu to become invisible
+                    expect($('.slide-menu').css('transform')).toBe("matrix(1, 0, 0, 1, -192, 0)")
+                    expect(document.body.classList).toContain("menu-hidden");
+                    done();
+                });
+        });
+
     });
 
     /* TODO: Write a new test suite named "Initial Entries" */
