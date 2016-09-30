@@ -45,9 +45,9 @@ Review the Feed Reader Testing [Project Rubric](https://review.udacity.com/#!/pr
 16. Write a test that ensures when a new feed is loaded by the `loadFeed` function that the content actually changes.
 17. No test should be dependent on the results of another.
 18. Callbacks should be used to ensure that feeds are loaded before they are tested.
+19. Implement error handling for undefined variables and out-of-bound array access.
 
 ## TODO
 
-19. Implement error handling for undefined variables and out-of-bound array access.
 20. When complete - all of your tests should pass.
 21. Write a README file detailing all steps required to successfully run the application. If you have added additional tests (for Udacious Test Coverage),  provide documentation for what these future features are and what the tests are checking for.

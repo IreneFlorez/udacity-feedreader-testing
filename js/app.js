@@ -41,6 +41,10 @@ function init() {
  * which will be called after everything has run successfully.
  */
  function loadFeed(id, cb) {
+     // Throw an error if an out-of-bounds index is used
+     if (id > allFeeds.length - 1 || id < 0) {
+        throw new Error("Feed index out of bounds");
+     }
      var feedUrl = allFeeds[id].url,
          feedName = allFeeds[id].name;
 
@@ -121,7 +125,15 @@ $(function() {
         var item = $(this);
 
         $('body').addClass('menu-hidden');
-        loadFeed(item.data('id'));
+
+        // Load relevant feed, catching any error if out-of-bounds index used
+        // (This error mot likely to happen unless there is a serious bug.)
+        try {
+            loadFeed(item.data('id'));
+        } catch(e) {
+            console.warn(e);
+        }
+
         return false;
     });
 
