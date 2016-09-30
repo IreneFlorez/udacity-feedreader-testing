@@ -33,16 +33,24 @@ $(function() {
          */
         it('all have defined and non-empty URLs', function() {
             for (var i = 0, len = allFeeds.length; i < len; i++) {
-                expect(allFeeds[i].url).toBeDefined();
-                expect(allFeeds[i].url).not.toEqual('');
+                expect(allFeeds[i].url).toBeDefined(); // Check defined
+                expect(allFeeds[i].url).not.toEqual(''); // Check non-empty
+                expect(allFeeds[i].url).toEqual(jasmine.any(String)); // Extra: check is a string
             }
         });
 
 
-        /* TODO: Write a test that loops through each feed
+        /* Test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+        it("each have a defined and non-empty name", function() {
+            for (var i = 0, len = allFeeds.length; i < len; i++) {
+                expect(allFeeds[i].name).toBeDefined();
+                expect(allFeeds[i].name).not.toEqual('');
+                expect(allFeeds[i].name).toEqual(jasmine.any(String)); // Extra: check is a string
+            }
+        })
     });
 
 
