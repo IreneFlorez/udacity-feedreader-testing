@@ -110,13 +110,9 @@ $(function() {
     /* DONE: Write a new test suite named "Initial Entries" */
     describe("Initial Entries", function() {
 
-        // Feed ID starts at zero and changes before each test, to allow
-        // testing of change
-        var feed_id = 0;
-
         // Allows testing of async functions
         beforeEach(function(done) {
-            loadFeed(++feed_id, function() {
+            loadFeed(1, function() {
                 done();
             })
         });
@@ -132,6 +128,7 @@ $(function() {
                 expect( $('.feed .entry').length ).toBeGreaterThan(0);
                 done();
             });
+    });
 
 
     /* TODO: Write a new test suite named "New Feed Selection"
@@ -140,5 +137,4 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-    });
 }());
