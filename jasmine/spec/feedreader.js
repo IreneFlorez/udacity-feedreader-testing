@@ -140,11 +140,30 @@ $(function() {
     /* DONE: Write a new test suite named "New Feed Selection" */
     describe("New Feed Selection", function() {
 
-        /* TODO: Write a test that ensures when a new feed is loaded
+        var oldFirstEntry;
+
+        // Allows testing of async functions
+        beforeEach(function(done) {
+            oldFirstEntry = $('.feed .entry').get(0);
+            loadFeed(2, function() {
+                done();
+            })
+        });
+
+        /* A test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
 
+        it("should change content when a new feed is loaded", function(done) {
+            expect( $('.feed .entry').get(0) ).not.toBe( oldFirstEntry );
+            done();
+        });
+
+        // Reload feed 0
+        afterAll(function() {
+            loadFeed(0);
+        });
     });
 
 }());
