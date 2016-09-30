@@ -78,7 +78,7 @@ $(function() {
 
         // Nested suite necessarily to allow waiting for CSS transitions to complete
         describe("hamburger icon", function() {
-            // Get jasmine to wait half a second before executing each spec
+            // Get jasmine to wait before executing each spec
             // to allow any CSS transitions to complete
             beforeEach(function(done) {
                 // Trigger click on hamburger icon
@@ -107,7 +107,8 @@ $(function() {
 
     });
 
-    /* TODO: Write a new test suite named "Initial Entries" */
+    /* DONE: Write a new test suite named "Initial Entries" */
+    describe("Initial Entries", function() {
 
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
@@ -122,4 +123,5 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+    });
 }());
