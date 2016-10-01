@@ -9,6 +9,51 @@
  * to ensure they don't run until the DOM is ready.
  */
 $(function() {
+
+    // Regular Expression for URL validation
+    //
+    // Author: Diego Perini
+    // Updated: 2010/12/05
+    // License: MIT
+    //
+    // Link: https://gist.github.com/dperini/729294
+    var re_weburl = new RegExp(
+      "^" +
+        // protocol identifier
+        "(?:(?:https?|ftp)://)" +
+        // user:pass authentication
+        "(?:\\S+(?::\\S*)?@)?" +
+        "(?:" +
+          // IP address exclusion
+          // private & local networks
+          "(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
+          "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
+          "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
+          // IP address dotted notation octets
+          // excludes loopback network 0.0.0.0
+          // excludes reserved space >= 224.0.0.0
+          // excludes network & broacast addresses
+          // (first & last IP address of each class)
+          "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+          "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+          "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+        "|" +
+          // host name
+          "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+          // domain name
+          "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+          // TLD identifier
+          "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+          // TLD may end with dot
+          "\\.?" +
+        ")" +
+        // port number
+        "(?::\\d{2,5})?" +
+        // resource path
+        "(?:[/?#]\\S*)?" +
+      "$", "i"
+    );
+
     /* This is our first test suite - a test suite just contains
     * a related set of tests. This suite is all about the RSS
     * feeds definitions, the allFeeds variable in our application.
@@ -33,10 +78,11 @@ $(function() {
          */
 
         function checkDefinedURLs(i) {
-            it('have defined and non-empty URLs (feed ' + i + ")", function() {
+            it('have defined, valid and non-empty URLs (feed ' + i + ")", function() {
                 expect(allFeeds[i].url).toBeDefined(); // Check defined
                 expect(allFeeds[i].url).not.toEqual(''); // Check non-empty
                 expect(allFeeds[i].url).toEqual(jasmine.any(String)); // Extra: check is a string
+                expect(allFeeds[i].url).toMatch(re_weburl);
             });
         }
         for (var i = 0, len = allFeeds.length; i < len; i++) {
