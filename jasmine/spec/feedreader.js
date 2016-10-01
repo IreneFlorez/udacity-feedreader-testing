@@ -50,7 +50,7 @@ $(function() {
                 expect(allFeeds[i].name).not.toEqual('');
                 expect(allFeeds[i].name).toEqual(jasmine.any(String)); // Extra: check is a string
             }
-        })
+        });
     });
 
 
@@ -62,12 +62,11 @@ $(function() {
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
-        it("should be hidden by default", function(done) {
+        it("should be hidden by default", function() {
             // Check via transform css property
-            expect($('.slide-menu').css('transform')).toBe("matrix(1, 0, 0, 1, -192, 0)")
+            expect($('.slide-menu').css('transform')).toBe("matrix(1, 0, 0, 1, -192, 0)");
             // Check also that body has class 'menu-hidden'
             expect(document.body.classList).toContain("menu-hidden");
-            done();
         });
 
          /* Test that ensures the menu changes
@@ -84,24 +83,22 @@ $(function() {
                 // Trigger click on hamburger icon
                 $('.icon-list').click();
                 // Wait enough time for transition to complete
-                setTimeout(function() {
-                    done();
-                }, 300);
+                setTimeout(done, 300);
             });
 
             it("should make the menu appear when clicked", function(done) {
                 // Expect menu to become visible
-                expect($('.slide-menu').css('transform')).toBe("matrix(1, 0, 0, 1, 0, 0)")
+                expect($('.slide-menu').css('transform')).toBe("matrix(1, 0, 0, 1, 0, 0)");
                 expect(document.body.classList).not.toContain("menu-hidden");
-                done();
+                done(); // Need because of async call to setTimeout used in beforeEach
             });
 
             it("should make the menu disappear when clicked while the menu is visible",
                 function(done) {
                     // Expect menu to become invisible
-                    expect($('.slide-menu').css('transform')).toBe("matrix(1, 0, 0, 1, -192, 0)")
+                    expect($('.slide-menu').css('transform')).toBe("matrix(1, 0, 0, 1, -192, 0)");
                     expect(document.body.classList).toContain("menu-hidden");
-                    done();
+                    done(); // Need because of async call to setTimeout used in beforeEach
                 });
         });
 
@@ -112,9 +109,7 @@ $(function() {
 
         // Allows testing of async functions
         beforeEach(function(done) {
-            loadFeed(1, function() {
-                done();
-            })
+            loadFeed(1, done);
         });
 
         /* Test that ensures when the loadFeed
@@ -128,26 +123,26 @@ $(function() {
                 expect( $('.feed .entry').length ).toBeGreaterThan(0);
                 done();
             });
-
-        // Reload feed 0
-        afterAll(function() {
-            loadFeed(0);
-        });
-
     });
 
 
     /* DONE: Write a new test suite named "New Feed Selection" */
     describe("New Feed Selection", function() {
 
-        var oldFirstEntry;
+        var oldFirstEntryHeading;
+
+        // Reset feed to 0 before all tests begin;
+        beforeAll(function(done) {
+            loadFeed(0, function(){
+                // Set oldFirstEntryHeading for later comparison
+                oldFirstEntryHeading = $('.feed .entry > h2').first().text();
+                done();
+            });
+        });
 
         // Allows testing of async functions
         beforeEach(function(done) {
-            oldFirstEntry = $('.feed .entry').get(0);
-            loadFeed(2, function() {
-                done();
-            })
+            loadFeed(2, done);
         });
 
         /* A test that ensures when a new feed is loaded
@@ -156,13 +151,15 @@ $(function() {
          */
 
         it("should change content when a new feed is loaded", function(done) {
-            expect( $('.feed .entry').get(0) ).not.toBe( oldFirstEntry );
-            done();
-        });
+            var newFirstEntryHeading = $('.feed .entry > h2').first().text();
 
-        // Reload feed 0
-        afterAll(function() {
-            loadFeed(0);
+            // Test that spec is working correctly
+            console.log('Testing that "should change content when a new feed is loaded" spec works correctly:');
+            console.log("Old feed first heading:", oldFirstEntryHeading);
+            console.log("New feed first heading:", newFirstEntryHeading);
+
+            expect( newFirstEntryHeading ).not.toBe( oldFirstEntryHeading );
+            done();
         });
     });
 
