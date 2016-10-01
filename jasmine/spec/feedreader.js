@@ -172,9 +172,8 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
         it("should load at least a single .entry element within the .feed container",
-            function(done) {
+            function() {
                 expect( $('.feed .entry').length ).toBeGreaterThan(0);
-                done();
             });
     });
 
@@ -203,7 +202,7 @@ $(function() {
          * Remember, loadFeed() is asynchronous.
          */
 
-        it("should change content when a new feed is loaded", function(done) {
+        it("should change content when a new feed is loaded", function() {
             var newFirstEntryHeading = $('.feed .entry > h2').first().text();
 
             // Test that spec is working correctly
@@ -212,7 +211,6 @@ $(function() {
             console.log("New feed first heading:", newFirstEntryHeading);
 
             expect( newFirstEntryHeading ).not.toBe( oldFirstEntryHeading );
-            done();
         });
     });
 
